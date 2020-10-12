@@ -1,0 +1,84 @@
+---
+title: 'Week 5-6: Prepare - Tree Map, Area Chart & Stacked Area Chart'
+author: "Shani Kumar"
+output:
+  word_document: default
+  pdf_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Week 5-6: Exercises: Charts
+
+You need to submit 3 tree maps, 3 area charts and 3 stacked area charts using Tableau or PowerBI, Python and R using the data below (or your own datasets). You can also submit using D3. You can choose which library to use in Python or R, documentation is provided to help you decide and as you start to play around in the libraries, you will decide which you prefer.
+
+**Data source**
+We are using dataset from [Data Source URL](https://content.bellevue.edu/cst/dsc/640/datasets/ex3-2.zip) file.
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+# import libraries
+library(ggplot2)
+library("xlsx")
+library(reshape2)
+library("dplyr") 
+library(numbers)
+library("treemap") 
+```
+```{r read, echo=FALSE}
+expenditures = read.table(file = "expenditures.txt", header = TRUE, sep = '\t', dec = '.', fill = TRUE)
+unemployement = read.csv2(file = "unemployement-rate-1948-2010.csv", header = TRUE, sep=',')
+unemployement$Value = as.numeric(as.character(unemployement$Value))
+# Show the data sample
+head(expenditures)
+head(unemployement)
+
+```
+
+### Data structure:
+```{r echo=FALSE}
+str(expenditures)
+str(unemployement)
+```
+
+\pagebreak
+
+### Construct Charts:
+
+**Treemap Chart**
+
+```{r echo=FALSE}
+treemap::treemap(expenditures,index = c('category'),
+                 vSize = 'expenditure',
+                 title = 'Expenditure by Category')
+```
+
+\pagebreak
+
+**Area Chart**
+
+```{r echo=FALSE}
+# Calculate mean rating
+unemployement_total = aggregate(Value ~ Year, unemployement, mean)
+
+p <- ggplot(unemployement_total, ggplot2::aes(x=Year , y=`Value`)) +
+  geom_area( fill='green', alpha=.2) +
+  geom_line() +
+  ylab("Mean Rate") +
+  ggtitle('Unemployment rate by Year')
+p
+```
+
+\pagebreak
+
+**Stacked Area Chart**
+
+```{r echo=FALSE}
+p <- ggplot(expenditures, aes(x=year, y=expenditure, fill=category)) +
+  geom_area() +
+  ggtitle('Expenditures for each category by Year')
+p
+```
+
