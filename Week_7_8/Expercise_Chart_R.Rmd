@@ -1,0 +1,86 @@
+---
+title: 'Week 5-6: Prepare - Scatterplots, Bubble Charts, and Density Plots'
+author: "Shani Kumar"
+output:
+  word_document: default
+  pdf_document:
+    df_print: paged
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Week 5-6: Exercises: Charts
+
+You need to submit 3 scatterplots, 3 bubble charts and 3 density plot charts using Tableau or PowerBI, Python and R using the data below (or your own datasets). You can also submit using D3. You can choose which library to use in Python or R, documentation is provided to help you decide and as you start to play around in the libraries, you will decide which you prefer.
+
+**Data source**
+We are using dataset from [Data Source URL](https://content.bellevue.edu/cst/dsc/640/datasets/ex4-2.zip) file.
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+# import libraries
+library(ggplot2)
+library("dplyr") 
+library(tidyr)
+```
+```{r read, echo=FALSE}
+crime_rate_raw = read.csv2(file = "crimerates-by-state-2005.csv", header = TRUE, sep=',', dec = '.')
+
+# Get state data by removing "United States Record"
+crime_rate <- crime_rate_raw %>% filter(state != 'United States')
+
+# Show the data sample
+head(crime_rate)
+
+```
+
+### Data structure:
+```{r echo=FALSE}
+str(crime_rate)
+```
+
+\pagebreak
+
+### Construct Charts:
+
+**Scatterplot**
+
+Plot: Motor Vehicle Theft Incidents vs Robbery Incidents
+```{r echo=FALSE}
+ggplot(crime_rate, aes(x=motor_vehicle_theft, y=robbery)) +
+  geom_point(color="red", alpha=0.5) +
+  xlab('Motor Vehicle Theft Incidents') + 
+  ylab('Robbery Incidents') +
+  ggtitle('Motor Vehicle Theft Incidents and Robbery Incidents') +
+  theme(plot.title = element_text(hjust = 0.5, size = 18))
+```
+
+\pagebreak
+
+**Bubble Chart**
+
+Plot: Motor Vehicle Theft Incidents vs Robbery Incidents (Bubble Size - Murder)
+```{r echo=FALSE}
+ggplot(crime_rate, aes(x=motor_vehicle_theft, y=robbery, size=murder)) +
+  geom_point(color="red", alpha=0.5) +
+  xlab('Motor Vehicle Theft Incidents') + 
+  ylab('Robbery Incidents') +
+  ggtitle('Motor Vehicle Theft Incidents and Robbery Incidents') +
+  theme(plot.title = element_text(hjust = 0.5, size = 18))
+```
+
+\pagebreak
+
+**Density Plot**
+
+Density Plot: For Burglary Incidents
+```{r echo=FALSE}
+ggplot(crime_rate, aes(x=burglary)) +
+  geom_density(color="red", fill="blue") +
+  xlab('Burglary Incident Counts') + 
+  ylab('Burglary Count Frequency/Density') +
+  ggtitle('Density Plot: Burglary Incidents') +
+  theme(plot.title = element_text(hjust = 0.5, size = 14)) 
+```
+
